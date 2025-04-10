@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>番号付けOKINA</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .input-container { margin-bottom: 10px; }
+    .name-box { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>名前に番号を振るアプリ</h1>
+
+  <div id="inputArea" class="input-container">
+    <!-- 名前の入力欄がここに増えていきます -->
+    <div class="name-box">
+      <input type="text" placeholder="名前を入力" class="name-input">
+    </div>
+  </div>
+
+  <button onclick="addInput()">＋ 項目を追加</button>
+  <button onclick="assignNumbers()">✔ 番号を振る</button>
+
+  <h2>結果：</h2>
+  <ul id="resultList"></ul>
+
+  <script>
+    function addInput() {
+      const inputArea = document.getElementById('inputArea');
+      const newBox = document.createElement('div');
+      newBox.className = 'name-box';
+      newBox.innerHTML = '<input type="text" placeholder="名前を入力" class="name-input">';
+      inputArea.appendChild(newBox);
+    }
+
+    function assignNumbers() {
+      const inputs = document.querySelectorAll('.name-input');
+      const resultList = document.getElementById('resultList');
+      resultList.innerHTML = ''; // 前の結果を消す
+
+      let count = 1;
+      inputs.forEach(input => {
+        const name = input.value.trim();
+        if (name) {
+          const li = document.createElement('li');
+          li.textContent = `${count}. ${name}`;
+          resultList.appendChild(li);
+          count++;
+        }
+      });
+
+      if (count === 1) {
+        resultList.innerHTML = '<li>名前が入力されていません。</li>';
+      }
+    }
+  </script>
+
+</body>
+</html>
