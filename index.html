@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>名前にランダムな番号を振るアプリ</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .input-container { margin-bottom: 10px; }
+    .name-box { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>名前にランダムな番号を振るアプリ</h1>
+
+  <div id="inputArea" class="input-container">
+    <div class="name-box">
+      <input type="text" placeholder="名前を入力" class="name-input">
+    </div>
+  </div>
+
+  <button onclick="addInput()">＋ 項目を追加</button>
+  <button onclick="assignRandomNumbers()">🎲 番号をランダムに振る</button>
+
+  <h2>結果：</h2>
+  <ul id="resultList"></ul>
+
+  <script>
+    function addInput() {
+      const inputArea = document.getElementById('inputArea');
+      const newBox = document.createElement('div');
+      newBox.className = 'name-box';
+      newBox.innerHTML = '<input type="text" placeholder="名前を入力" class="name-input">';
+      inputArea.appendChild(newBox);
+    }
+
+    // 配列をシャッフルする関数（Fisher–Yatesアルゴリズム）
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function assignRandomNumbers() {
+      const inputs = document.querySelectorAll('.name-input');
+      const resultList = document.getElementById('resultList');
+      resultList.innerHTML = '';
+
+      // 入力された名前だけを取得（空欄除外）
+      const names = Array.from(inputs)
+        .map(input => input.value.trim())
+        .filter(name => name !== '');
+
+      if (names.length === 0) {
+        resultList.innerHTML = '<li>名前が入力されていません。</li>';
+        return;
+      }
+
+      // 番号のリストを作ってシャッフル
+      const numbers = shuffleArray([...Array(names.length)].map((_, i) => i + 1));
+
+      // 名前と番号をペアで表示
+      names.forEach((name, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${numbers[index]}. ${name}`;
+        resultList.appendChild(li);
+      });
+    }
+  </script>
+
+</body>
+</html>
